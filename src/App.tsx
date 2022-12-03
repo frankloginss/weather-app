@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Paper,
   TextInput,
@@ -10,6 +10,7 @@ import {
   Tooltip,
 } from "@mantine/core";
 import { IconAlertCircle } from "@tabler/icons";
+import manc_clouds from './assets/manc_clouds.jpg'
 
 function App() {
   const API_KEY = "7eca2450e1bf0f32eecc39b31b26549c";
@@ -24,7 +25,7 @@ function App() {
       );
 
       const data = await srvResponse.json();
-      console.log(data);
+      console.log('Data => ', data);
       // setWeatherData(data);
       // data && setWeatherData(data)
       if (data?.cod === "400") {
@@ -33,9 +34,19 @@ function App() {
         setWeatherData(data);
       }
     } catch (error) {
-      console.log("error", error);
+      console.log("error => ", error);
     }
   }
+
+  useEffect(() => {
+    getWeatherData()
+  
+    return () => {
+      // @ts-ignore
+      console.log('useEffect => ', cityInput);
+    }
+  }, [])
+  
 
   const capitalizeFirstLetter = (str: string) => {
     var splitStr = str?.toLowerCase().split(" ");
@@ -48,6 +59,7 @@ function App() {
     // Directly return the joined string
     return splitStr?.join(" ");
   };
+  
   const css = `@media (max-width: 750px) {
     .mobilex {
       width: 80%;
@@ -63,7 +75,7 @@ function App() {
         position: "static",
         height: "100vh",
         backgroundImage:
-          "url('https://littlevisuals.co/images/manc_clouds.jpg')",
+        `url(${manc_clouds})`,
         backgroundSize: "cover",
       }}
     >
